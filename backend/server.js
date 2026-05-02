@@ -4,10 +4,10 @@ const cors = require('cors');
 const morgan = require('morgan');
 require('dotenv').config();
 
-const authRoutes    = require('./routes/auth');
+const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/projects');
-const taskRoutes    = require('./routes/tasks');
-const userRoutes    = require('./routes/users');
+const taskRoutes = require('./routes/tasks');
+const userRoutes = require('./routes/users');
 
 const app = express();
 
@@ -20,10 +20,10 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // ── Routes ─────────────────────────────────────────────────────────────────────
-app.use('/api/auth',     authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
-app.use('/api/tasks',    taskRoutes);
-app.use('/api/users',    userRoutes);
+app.use('/api/tasks', taskRoutes);
+app.use('/api/users', userRoutes);
 
 // ── Health Check ───────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) =>
@@ -50,10 +50,13 @@ const PORT = process.env.PORT || 5000;
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log('✅  MongoDB connected');
-    app.listen(PORT, () => console.log(`🚀  Server on http://localhost:${PORT}`));
+    console.log("✅ MongoDB connected");
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
   })
   .catch((err) => {
-    console.error('❌  MongoDB error:', err.message);
+    console.error("❌ MongoDB error:", err.message);
     process.exit(1);
   });
